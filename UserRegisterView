@@ -1,0 +1,215 @@
+package user;
+//package utils;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import dao.UserDAO;
+import dto.UserDTO;
+import java.awt.event.ActionEvent;
+
+//import utils.MessageBundleReader;
+//import userRegisterView.UserRegisterView;
+
+public class UserRegisterView extends JFrame {
+
+	//private JPanel contentPane;
+	private JTextField useridtxt;
+	private JPasswordField passwordField;
+	private JPanel contentPane;
+	JLabel usrnamelbl = new JLabel("");
+	JLabel pswdlbl = new JLabel("");
+	JLabel gndrlbl = new JLabel("Gender");
+	JLabel lblCity = new JLabel("City");
+	JButton registerbtn = new JButton("");
+	JComboBox comboBox = new JComboBox();
+	JComboBox comboBox_1 = new JComboBox();
+	private final JButton resetbtn = new JButton("");
+	ButtonGroup bg = new ButtonGroup();
+	JRadioButton rdbtnMale = new JRadioButton("Male",false);
+	JRadioButton rdbtnFemale = new JRadioButton("Female",false);
+	public final String SUCCESS = "success";
+	public final String FAIL = "fail";
+	public final String ERROR = "error";
+	
+
+		
+	private void register()
+	{
+		UserDTO userDTO = new UserDTO();
+		UserDAO userDAO = new UserDAO();
+		
+		UserDTO.setUserid(useridtxt.getText());
+		
+		UserDTO.setPassword(String.valueOf(passwordField.getPassword()));
+		if(rdbtnMale.isSelected())
+		{
+			userDTO.setGender(rdbtnMale.getText());
+		}
+		else if(rdbtnFemale.isSelected())
+		{
+			userDTO.setGender(rdbtnFemale.getText());
+		}
+		userDTO.setCity((String)comboBox.getSelectedItem());
+		UserDAO dao = new UserDAO();
+		try
+		{
+			String message = dao.register(userDTO);
+			if(message.equals(SUCCESS))
+			{
+				JOptionPane.showMessageDialog(this, "User Register Succesfully !");
+			}
+			else if(message.equals(FAIL))
+			{
+				JOptionPane.showMessageDialog(this, "Problem In Registration");
+			}
+			else if(message.equals(ERROR))
+			{
+				JOptionPane.showMessageDialog(this, "Contact to System Vendor, there is some problem in Application");
+			}
+		}catch(Exception e )
+		{
+			JOptionPane.showMessageDialog(this, "Contact to System Vendor, there is some problem in Application");
+			e.printStackTrace();
+		}
+	
+	}
+
+	public static void main(String[] args) {
+		
+					UserRegisterView frame = new UserRegisterView();
+					frame.setVisible(true);
+				
+	}
+
+	
+	public UserRegisterView() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		getContentPane().setBackground(Color.WHITE);
+		setTitle("Sign Up");
+		this.getContentPane().setLayout(null);
+		setBounds(100, 100, 500, 435);
+		
+		
+		
+		Icon usr = new ImageIcon(UserRegisterView.class.getResource("user.png"));
+		usrnamelbl.setIcon(usr);
+		usrnamelbl.setBounds(98, 41,50, 50);
+		getContentPane().add(usrnamelbl);
+		
+		
+		Icon usr2 = new ImageIcon(UserRegisterView.class.getResource("pswd.png"));
+		pswdlbl.setIcon(usr2);
+		pswdlbl.setBounds(98, 116, 50, 50);
+		getContentPane().add(pswdlbl);
+		gndrlbl.setFont(new Font("Dialog", Font.BOLD, 18));
+		
+		gndrlbl.setBounds(98, 190, 88, 26);
+		getContentPane().add(gndrlbl);
+		
+		
+		useridtxt = new JTextField();
+		useridtxt.setBounds(218, 65, 157, 26);
+		getContentPane().add(useridtxt);
+		useridtxt.setColumns(20);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(218, 139, 157, 26);
+		getContentPane().add(passwordField);
+		
+		
+		rdbtnMale.setBackground(Color.WHITE);
+		bg.add(rdbtnMale);
+		rdbtnMale.setBounds(218, 193, 83, 23);
+		getContentPane().add(rdbtnMale);
+		
+		
+		rdbtnFemale.setBackground(Color.WHITE);
+		bg.add(rdbtnFemale);
+		rdbtnFemale.setBounds(302, 193, 83, 23);
+		getContentPane().add(rdbtnFemale);
+		
+		
+		lblCity.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblCity.setBounds(98, 245, 88, 26);
+		getContentPane().add(lblCity);
+		
+		
+		comboBox.setBackground(Color.WHITE);
+		comboBox.addItem("--Choose City--");
+		comboBox.addItem("Delhi");
+		comboBox.addItem("Harayana");
+		comboBox.setBounds(218, 245, 157, 24);
+		getContentPane().add(comboBox);
+		
+		JLabel lblBranch = new JLabel("Branch");
+		lblBranch.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblBranch.setBounds(98, 305, 88, 26);
+		getContentPane().add(lblBranch);
+		
+		
+		comboBox_1.setBackground(Color.WHITE);
+		comboBox_1.addItem("--Choose Branch--");
+		comboBox_1.addItem("CSE");
+		comboBox_1.addItem("ECE");
+		comboBox_1.addItem("EEE");
+		comboBox_1.addItem("BBA");
+		comboBox_1.addItem("MBA");
+		comboBox_1.addItem("Civil");
+		comboBox_1.addItem("Mechanical");
+		comboBox_1.addItem("Aeronautical");
+		comboBox_1.setBounds(218, 307, 157, 24);
+		getContentPane().add(comboBox_1);
+		
+		
+		Icon register = new ImageIcon(UserRegisterView.class.getResource("register2.png"));
+		registerbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				register();
+			}
+		});
+		registerbtn.setBackground(Color.WHITE);
+		
+		registerbtn.setIcon(register);
+		registerbtn.setBounds(330, 354,45, 45);
+		getContentPane().add(registerbtn);
+		
+		
+		resetbtn.setBackground(Color.WHITE);
+		Icon reset = new ImageIcon(UserRegisterView.class.getResource("refresh.png"));
+		resetbtn.setIcon(reset);
+		resetbtn.setForeground(Color.WHITE);
+		resetbtn.setBounds(273, 354, 45, 45);
+		getContentPane().add(resetbtn);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+
+	
+}
